@@ -10,12 +10,11 @@ Port of the GhostLock exploit for the Redmi Note 12 Pro 5G
 ## Build
 
 ```sh
-NDK_ROOT=/path/to/android-ndk-r30 make
+NDK_ROOT=/path/to/android-ndk-* make
 ```
 
-The source files live directly under `src/`; `src/target_ruby.h` is the
-single compile-time offset file.  Other device kernels, runtime offset
-tables, and the external `offsets.json` override were removed from this copy.
+The source files live directly under `src/`
+Offsets: `src/target_ruby.h` 
 
 ## Run
 
@@ -28,12 +27,7 @@ adb shell chmod 755 /data/local/tmp/ghostlock_ruby
 adb shell /data/local/tmp/ghostlock_ruby
 ```
 
-At the end of the exploit log:
-
-```text
-connect with: nc 127.0.0.1 55555
-```
-Connect on the device or via adb:
+At the end of the exploit the KernelSU module (needs manager version v3.2.5) will be loaded and selinux is restored. If that fails selinux stays permissive and you can access the root shell:
 
 ```sh
 nc 127.0.0.1 55555
